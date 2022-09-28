@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Margarita Yakubovskaya](https://up.htmlacademy.ru/javascript/27/user/2064287).
-* Наставник: `Неизвестно`.
+* Наставник: [Владимир Якушкин](https://htmlacademy.ru/profile/id126208).
 
 ---
 
