@@ -1,3 +1,3 @@
 import './data.js';
-import './generatingSimilarElements.js';
+import './markup.js';
 
