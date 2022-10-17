@@ -91,6 +91,6 @@ const getRandomAd = (_, i) => {
   };
 };
 
-const generatedRandomAD = () => Array.from({length : RANDOM_ADS_AMOUNT}, getRandomAd);
+const generatedRandomAD = (count = RANDOM_ADS_AMOUNT) => Array.from({length : count}, getRandomAd);
 
 export {generatedRandomAD};
