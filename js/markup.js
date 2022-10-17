@@ -1,7 +1,7 @@
 import { generatedRandomAD } from './data.js';
 import { hideElement } from './util.js';
 
-const TYPE_OBJECT = {
+const ListOfTypes = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -15,16 +15,89 @@ const cardTemplate = document.querySelector('#card').content.querySelector('.pop
 const similarCards = generatedRandomAD(1);
 const similarListFragment = document.createDocumentFragment();
 
+const setCardTitle = (card, title) => {
+  const titleElement = card.querySelector('.popup__title');
+  if (title) {
+    titleElement.textContent = title;
+  } else {
+    hideElement(titleElement);
+  }
+};
+
+const setCardAddress = (card, address) => {
+  const addressElement = card.querySelector('.popup__text--address');
+  if (address) {
+    addressElement.textContent = address;
+  } else {
+    hideElement(addressElement);
+  }
+};
+
+const setCardPrice = (card, price) => {
+  const priceElement = card.querySelector('.popup__text--price');
+  if (price) {
+    priceElement.textContent = `${price} ₽/ночь`;
+  } else {
+    hideElement(priceElement);
+  }
+};
+
+const setCardType = (card, type) => {
+  const typeElement = card.querySelector('.popup__type');
+  if (type) {
+    typeElement.textContent = ListOfTypes[type];
+  } else {
+    hideElement(typeElement);
+  }
+};
+
+const setCardCapacity = (card, rooms, guests) => {
+  const capacityElement = card.querySelector('.popup__text--capacity');
+  if (rooms && guests) {
+    capacityElement.textContent = `${rooms} комнаты для ${guests} гостей`;
+  } else {
+    hideElement(capacityElement);
+  }
+};
+
+const setCardTime = (card, checkin, checkout) => {
+  const timeElement = card.querySelector('.popup__text--time');
+  if (checkin && checkout) {
+    timeElement.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  } else {
+    hideElement(timeElement);
+  }
+};
+
+const setCardDescription = (card, description) => {
+  const descriptionElement = card.querySelector('.popup__description');
+  if (description) {
+    descriptionElement.textContent = description;
+  } else {
+    hideElement(descriptionElement);
+  }
+};
+const setCardAvatar = (card, avatar) => {
+  const avatarElement = card.querySelector('.popup__avatar');
+  if (avatar) {
+    avatarElement.src = avatar;
+  } else {
+    hideElement(avatarElement);
+  }
+};
+
 
 similarCards.forEach((similarCard) => {
   const card = cardTemplate.cloneNode(true);
-  card.querySelector('.popup__title').textContent = similarCard.offer.title || hideElement(card.querySelector('.popup__title'));
-  card.querySelector('.popup__text--address').textContent = similarCard.offer.address || hideElement(card.querySelector('.popup__text--address'));
-  card.querySelector('.popup__text--price').textContent = `${similarCard.offer.price} ₽/ночь` || hideElement(card.querySelector('.popup__text--price'));
-  card.querySelector('.popup__type').textContent = TYPE_OBJECT[similarCard.offer.type] || hideElement(card.querySelector('.popup__type'));
-  card.querySelector('.popup__text--capacity').textContent = `${similarCard.offer.rooms} комнаты для ${similarCard.offer.guests} гостей` || hideElement(card.querySelector('.popup__text--capacity'));
-  card.querySelector('.popup__text--time').textContent = `Заезд после ${similarCard.offer.checkin}, выезд до ${similarCard.offer.checkout}` || hideElement(card.querySelector('.popup__text--time'));
-  card.querySelector('.popup__description').textContent = similarCard.offer.description || hideElement(card.querySelector('.popup__description'));
+
+  setCardTitle(card, similarCard.offer.title);
+  setCardAddress(card, similarCard.offer.address);
+  setCardPrice(card, similarCard.offer.price);
+  setCardType(card, similarCard.offer.type);
+  setCardCapacity(card, similarCard.offer.rooms, similarCard.offer.guests);
+  setCardTime(card, similarCard.offer.checkin, similarCard.offer.checkout);
+  setCardDescription(card, similarCard.offer.description);
+  setCardAvatar(card, similarCard.avatar);
 
   const photoContainer = card.querySelector('.popup__photos');
   if (!similarCard.offer.photos) {
@@ -56,8 +129,6 @@ similarCards.forEach((similarCard) => {
     featuresListContainer.innerHTML = '';
     featuresListContainer.append(similarFeatureFragment);
   }
-  card.querySelector('.popup__avatar').src = similarCard.avatar;
-
 
   similarListFragment.appendChild(card);
 });
