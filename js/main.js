@@ -1,2 +1,3 @@
-import {generatedRandomAD} from './data.js';
-generatedRandomAD();
+import './data.js';
+import './markup.js';
+

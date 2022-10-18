@@ -22,4 +22,6 @@ const shuffleArray = (array) => {
 const getShuffledArrayWithRandomLength = (array) => shuffleArray([...array]).slice(getRandomIntegerNumber(0, array.length - 1));
 const getRandomArrayElement = (array) => array[getRandomIntegerNumber(0, array.length - 1)];
 
-export {getRandomArrayElement, getRandomIntegerNumber, getShuffledArrayWithRandomLength, getRandomFloatingPointNumber};
+const hideElement = (element) => element.classList.add('hidden');
+
+export {getRandomArrayElement, getRandomIntegerNumber, getShuffledArrayWithRandomLength, getRandomFloatingPointNumber, hideElement};
