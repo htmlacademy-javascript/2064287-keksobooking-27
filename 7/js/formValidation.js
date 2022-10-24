@@ -31,8 +31,6 @@ const getPriceMessage = (value) => {
 };
 pristine.addValidator(PRICE, priceValidation, getPriceMessage, 100, true);
 
-// Поле «Количество комнат» синхронизировано с полем «Количество мест» таким образом,
-// что при выборе количества комнат вводятся ограничения на допустимые варианты выбора количества гостей:
 const RoomsAndCapacity = {
   1: '«для 1 гостя»',
   2 : '«для 2 гостей» или «для 1 гостя»',
@@ -64,5 +62,6 @@ pristine.addValidator(ROOMS, roomsValidation, getRoomsMessage, 100, true);
 
 FORM.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  if (pristine.validate()) {
+    FORM.submit();}
 });
