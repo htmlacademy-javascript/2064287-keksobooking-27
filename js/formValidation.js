@@ -1,8 +1,8 @@
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
 const PRICE = FORM.querySelector('#price');
-// const ADDRESS = FORM.querySelector('#address');
-
+const ROOMS = FORM.querySelector('#room_number');
+const CAPACITY = FORM.querySelector('#capacity');
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -12,12 +12,6 @@ const pristineConfig = {
 };
 const pristine = new Pristine(FORM, pristineConfig);
 
-// const title = {
-//   min: 30,
-//   max: 100,
-//   element: TITLE,
-// };
-
 const titleValidation = (value) => value.length >= 30 && value.length <= 100;
 const getTitleMessage = (value) => {
   if (!value.length) {
@@ -25,16 +19,8 @@ const getTitleMessage = (value) => {
   }
   return `Необходимо ввести от 30 до 100 символов. Вы ввели: ${value.length}`;
 };
+pristine.addValidator(TITLE, titleValidation, getTitleMessage, 100, true);
 
-pristine.addValidator(
-  TITLE, titleValidation,
-  getTitleMessage, 100, true
-);
-
-// const price = {
-//   max: 100000,
-//   element: PRICE,
-// };
 
 const priceValidation = (value) => +value && +value <= 100000;
 const getPriceMessage = (value) => {
@@ -43,41 +29,40 @@ const getPriceMessage = (value) => {
   }
   return 'Максимальная стоимость: 100 000';
 };
+pristine.addValidator(PRICE, priceValidation, getPriceMessage, 100, true);
 
-pristine.addValidator(
-  PRICE, priceValidation,
-  getPriceMessage, 100, true
-);
+// Поле «Количество комнат» синхронизировано с полем «Количество мест» таким образом,
+// что при выборе количества комнат вводятся ограничения на допустимые варианты выбора количества гостей:
+const RoomsAndCapacity = {
+  1: '«для 1 гостя»',
+  2 : '«для 2 гостей» или «для 1 гостя»',
+  3 : '«для 3 гостей», «для 2 гостей» или «для 1 гостя»',
+  100 : '«не для гостей»'
+};
 
+const roomsValidation = () => {
+  const roomValue = parseInt(ROOMS.value, 10);
+  const capacityValue = parseInt(CAPACITY.value, 10);
+  const roomsValidCapacitiesMap = {
+    1: [1],
+    2: [1, 2],
+    3: [1, 2, 3],
+    100: [0],
+  };
 
-// const formValidatorData = {
-//   title : {
-//     min: 20,
-//     max: 100,
-//     element: TITLE
-//   },
-//   price: {
-//     max: 100000,
-//     element: PRICE,
-//   },
-//   address: {
-//     element: ADDRESS
+  const validCapacityValuesForRoom = roomsValidCapacitiesMap[roomValue];
+  return validCapacityValuesForRoom.includes(capacityValue);
+};
 
-//   },
+CAPACITY.addEventListener('change', () => {
+  pristine.validate(ROOMS);
+});
 
-// };
+const getRoomsMessage = () => RoomsAndCapacity[ROOMS.value];
 
-// const makePristine = (validatorData, form, config) =>{
-//   const pristine = new Pristine(form, config);
-
-// pristine.addValidator(elem, fn, msg, priority, halt)
-
-// };
-
+pristine.addValidator(ROOMS, roomsValidation, getRoomsMessage, 100, true);
 
 FORM.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) { console.log('true');}
-  else { console.log('false');}
+  pristine.validate();
 });
