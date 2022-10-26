@@ -4,6 +4,8 @@ const PRICE = FORM.querySelector('#price');
 const ROOMS = FORM.querySelector('#room_number');
 const CAPACITY = FORM.querySelector('#capacity');
 const TYPE_OF_LIVING = FORM.querySelector('#type');
+const CHECKIN = FORM.querySelector('#timein');
+const CHECKOUT = FORM.querySelector('#timeout');
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -20,9 +22,9 @@ const PriceForLiving = {
 };
 const RoomsAndCapacity = {
   1: '«для 1 гостя»',
-  2 : '«для 2 гостей» или «для 1 гостя»',
-  3 : '«для 3 гостей», «для 2 гостей» или «для 1 гостя»',
-  100 : '«не для гостей»'
+  2: '«для 2 гостей» или «для 1 гостя»',
+  3: '«для 3 гостей», «для 2 гостей» или «для 1 гостя»',
+  100: '«не для гостей»'
 };
 
 const pristine = new Pristine(FORM, pristineConfig);
@@ -46,7 +48,8 @@ TYPE_OF_LIVING.addEventListener('change', () => {
 
 const priceValidation = (value) => {
   if (!value) {
-    return false;}
+    return false;
+  }
   const selectedValueInTypeOfLiving = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
   const minimalValue = PriceForLiving[selectedValueInTypeOfLiving];
 
@@ -87,8 +90,20 @@ CAPACITY.addEventListener('change', () => {
 const getRoomsMessage = () => RoomsAndCapacity[ROOMS.value];
 pristine.addValidator(ROOMS, roomsValidation, getRoomsMessage, 100, true);
 
+
+CHECKIN.addEventListener('change', () => {
+  const selectedValueCheckin = CHECKIN.options[CHECKIN.selectedIndex].value;
+  CHECKOUT.value = selectedValueCheckin;
+});
+CHECKOUT.addEventListener('change', () => {
+  const selectedValueCheckout = CHECKOUT.options[CHECKOUT.selectedIndex].value;
+  CHECKIN.value = selectedValueCheckout;
+});
+
+
 FORM.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    FORM.submit();}
+    FORM.submit();
+  }
 });

@@ -5,7 +5,7 @@ const MAP_FORM = document.querySelector('.map__filters');
 const MAP_FORMS_FILTER = MAP_FORM.querySelectorAll('.map__filter');
 const MAP_FORM_FIELDSET = MAP_FORM.querySelector('.map__features');
 
-const makeUnactive = () => {
+const makeInactive = () => {
   AD_FORM.classList.add('ad-form--disabled');
   MAP_FORM.classList.add('map__filters--disabled');
 
@@ -34,4 +34,4 @@ const makeActive = () => {
 
 };
 
-export { makeUnactive, makeActive };
+export { makeInactive, makeActive };
