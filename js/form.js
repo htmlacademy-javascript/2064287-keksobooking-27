@@ -1,11 +1,13 @@
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
+const ADDRESS = FORM.querySelector('#address');
 const PRICE = FORM.querySelector('#price');
 const ROOMS = FORM.querySelector('#room_number');
 const CAPACITY = FORM.querySelector('#capacity');
 const TYPE_OF_LIVING = FORM.querySelector('#type');
 const CHECKIN = FORM.querySelector('#timein');
 const CHECKOUT = FORM.querySelector('#timeout');
+const SLIDER = FORM.querySelector('.ad-form__slider');
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -37,7 +39,6 @@ const getTitleMessage = (value) => {
   return `Необходимо ввести от 30 до 100 символов. Вы ввели: ${value.length}`;
 };
 pristine.addValidator(TITLE, titleValidation, getTitleMessage, 100, true);
-
 
 TYPE_OF_LIVING.addEventListener('change', () => {
   const selectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
@@ -107,3 +108,27 @@ FORM.addEventListener('submit', (evt) => {
     FORM.submit();
   }
 });
+
+
+noUiSlider.create(SLIDER, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: (value) => value.toFixed(),
+    from: (value) => +value
+  }
+});
+
+SLIDER.noUiSlider.on('update', () => {
+  PRICE.value = SLIDER.noUiSlider.get();
+});
+PRICE.addEventListener('change', () => {
+  SLIDER.noUiSlider.set(PRICE.value);
+});
+
+export { ADDRESS };
