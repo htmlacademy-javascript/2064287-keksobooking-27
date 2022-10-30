@@ -1,4 +1,3 @@
-import { generatedRandomAD } from './data.js';
 import { hideElement } from './util.js';
 
 const ListOfTypes = {
@@ -9,11 +8,7 @@ const ListOfTypes = {
   hotel: 'Отель'
 };
 
-const mapCanvas = document.querySelector('.map__canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-
-const similarCards = generatedRandomAD(1);
-const similarListFragment = document.createDocumentFragment();
 
 const setCardTitle = (card, title) => {
   const titleElement = card.querySelector('.popup__title');
@@ -87,7 +82,7 @@ const setCardAvatar = (card, avatar) => {
 };
 
 
-similarCards.forEach((similarCard) => {
+const getRendedCard = (similarCard) => {
   const card = cardTemplate.cloneNode(true);
 
   setCardTitle(card, similarCard.offer.title);
@@ -129,8 +124,7 @@ similarCards.forEach((similarCard) => {
     featuresListContainer.innerHTML = '';
     featuresListContainer.append(similarFeatureFragment);
   }
+  return card;
+};
 
-  similarListFragment.appendChild(card);
-});
-
-mapCanvas.appendChild(similarListFragment);
+export { getRendedCard };

@@ -22,7 +22,6 @@ const makeInactive = () => {
 const makeActive = () => {
   AD_FORM.classList.remove('ad-form--disabled');
   MAP_FORM.classList.remove('map__filters--disabled');
-
   AD_FORMS_ELEMENTS.forEach((element) => {
     element.removeAttribute('disabled');
   });
@@ -31,7 +30,6 @@ const makeActive = () => {
     element.removeAttribute('disabled');
   });
   MAP_FORM_FIELDSET.removeAttribute('disabled');
-
 };
 
 export { makeInactive, makeActive };
