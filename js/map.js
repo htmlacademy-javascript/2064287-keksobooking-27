@@ -1,7 +1,8 @@
-import { ADDRESS } from './formValidation.js';
-import { generatedRandomAD } from './data.js';
+import { ADDRESS } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeInactive } from './switchingActivity.js';
+import { getData } from './API.js';
+import { showError } from './util.js';
 
 const TokyoCoordinate = {
   LAT: 35.65283,
@@ -51,17 +52,21 @@ const usualicon = L.icon(
   }
 );
 const markerGroup = L.layerGroup().addTo(map);
-const ICONS = generatedRandomAD(10);
 
-ICONS.forEach((icon) => {
-  const marker = L.marker({
-    lat: icon.location.lat,
-    lng: icon.location.lng
-  },
-  {
-    icon: usualicon
-  })
-    .addTo(markerGroup)
-    .bindPopup(getRendedCard(icon));
-  return marker;
-});
+const addToMap = (data) => {
+  data.forEach((icon) => {
+    const marker = L.marker({
+      lat: icon.location.lat,
+      lng: icon.location.lng
+    },
+    {
+      icon: usualicon
+    })
+      .addTo(markerGroup)
+      .bindPopup(getRendedCard(icon));
+    return marker;
+  });
+};
+
+getData(addToMap, showError);
+export {addToMap, map, mainPin};
