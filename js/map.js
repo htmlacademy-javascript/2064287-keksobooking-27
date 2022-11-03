@@ -4,10 +4,7 @@ import { makeActive, makeInactive } from './switchingActivity.js';
 import { getData } from './API.js';
 import { showError } from './util.js';
 
-const TokyoCoordinate = {
-  LAT: 35.65283,
-  LNG: 139.83947
-};
+
 const ICOR_URL = './img/pin.svg';
 const ICON_SIZE = [40, 40];
 const ICON_ANCOR = [20, 40];
@@ -16,6 +13,10 @@ const SPECIAL_ICON_URL = './img/main-pin.svg';
 const SPECIAL_ICON_SIZE = [52, 52];
 const SPECIAL_ICON_ANCOR = [26, 52];
 
+const TokyoCoordinate = {
+  LAT: 35.65283,
+  LNG: 139.83947
+};
 
 makeInactive();
 const map = L.map('map-canvas').on('load', () => {
@@ -53,7 +54,7 @@ mainPin.on('moveend', (evt) => {
   ADDRESS.value = `lat: ${lat.toFixed(5)},  lng: ${lng.toFixed(5)}`;
 });
 
-const usualicon = L.icon(
+const usualIcon = L.icon(
   {
     iconUrl: ICOR_URL,
     iconSize: ICON_SIZE,
@@ -69,7 +70,7 @@ const addToMap = (data) => {
       lng: icon.location.lng
     },
     {
-      icon: usualicon
+      icon: usualIcon
     })
       .addTo(markerGroup)
       .bindPopup(getRendedCard(icon));
@@ -78,4 +79,5 @@ const addToMap = (data) => {
 };
 
 getData(addToMap, showError);
-export {addToMap, map, mainPin};
+
+export {addToMap, map, mainPin, TokyoCoordinate};

@@ -1,13 +1,11 @@
 import { sendData } from './API.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
-import { map, mainPin } from './map.js';
+import { map, mainPin, TokyoCoordinate } from './map.js';
 
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
 const ADDRESS = FORM.querySelector('#address');
 const PRICE = FORM.querySelector('#price');
-// let PRICE_PLACEHOLDER ;
-// console.log(PRICE_PLACEHOLDER);
 const ROOMS = FORM.querySelector('#room_number');
 const CAPACITY = FORM.querySelector('#capacity');
 const TYPE_OF_LIVING = FORM.querySelector('#type');
@@ -19,7 +17,6 @@ const SUCCESS_MESSAGE = document.querySelector('#success').content.querySelector
 const ERROR_MESSAGE = document.querySelector('#error').content.querySelector('.error');
 const ERROR_BUTTON = ERROR_MESSAGE.querySelector('.error__button');
 const RESET_BUTTON = FORM.querySelector('.ad-form__reset');
-
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -84,26 +81,6 @@ const getPriceMessage = (value) => {
 
 pristine.addValidator(PRICE, priceValidation, getPriceMessage, 100, true);
 
-noUiSlider.create(SLIDER, {
-  range: {
-    min: 0,
-    max: 100000,
-  },
-  start: 0,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: (value) => value.toFixed(),
-    from: (value) => +value
-  }
-});
-
-
-SLIDER.noUiSlider.on('update', () => {
-  PRICE.value = SLIDER.noUiSlider.get();
-});
-
-
 const roomsValidation = () => {
   const roomValue = parseInt(ROOMS.value, 10);
   const capacityValue = parseInt(CAPACITY.value, 10);
@@ -147,12 +124,12 @@ const unblockSubmitButton = () => {
 const resetForm = () => {
   FORM.reset();
   mainPin.setLatLng({
-    lat: 35.65283,
-    lng: 139.83947
+    lat: TokyoCoordinate.LAT,
+    lng: TokyoCoordinate.LNG
   });
   map.setView({
-    lat: 35.65283,
-    lng: 139.83947
+    lat: TokyoCoordinate.LAT,
+    lng: TokyoCoordinate.LNG
   }, 10);
   map.closePopup();
   //add reset of filtring
@@ -188,4 +165,4 @@ RESET_BUTTON.addEventListener('click', (evt) => {
   resetForm();
 });
 
-export { ADDRESS };
+export { ADDRESS, SLIDER, PRICE };
