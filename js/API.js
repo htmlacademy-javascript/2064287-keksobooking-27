@@ -1,5 +1,5 @@
 const getData = ((onSuccess, onFail) => {
-  fetch('https://27.javascript.pages.academy/keksobooking/data')
+  fetch('https://27.javascript.pages.academy/keksobooking/dat')
     .then((response) => response.json())
     .then((data) => {
       onSuccess(data);
