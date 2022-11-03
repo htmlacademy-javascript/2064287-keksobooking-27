@@ -1,4 +1,5 @@
-const ERROR_SHOW_TIME = 60000000;
+const ERROR_SHOW_TIME = 10000;
+const BODY = document.querySelector('body');
 
 const getRandomFloatingPointNumber = (min, max, amountCharactersAfterPoint) => {
   if (min < 0 || max < 0 || amountCharactersAfterPoint < 0) {
@@ -51,11 +52,13 @@ const showError = (message) => {
 };
 
 const getStatusMessage = ((element) => {
-  document.body.append(element);
+  BODY.append(element);
 });
 
 const removeStatusMessage = ((element) => {
-  document.body.removeChild(element);
+  if (element.parentNode) {
+    element.parentNode.removeChild(element);}
+  // BODY.removeChild(element);
 });
 
 const closeStatusMessageByClick = (statusMessage) => {

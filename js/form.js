@@ -6,6 +6,8 @@ const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
 const ADDRESS = FORM.querySelector('#address');
 const PRICE = FORM.querySelector('#price');
+// let PRICE_PLACEHOLDER ;
+// console.log(PRICE_PLACEHOLDER);
 const ROOMS = FORM.querySelector('#room_number');
 const CAPACITY = FORM.querySelector('#capacity');
 const TYPE_OF_LIVING = FORM.querySelector('#type');
@@ -53,6 +55,7 @@ pristine.addValidator(TITLE, titleValidation, getTitleMessage, 100, true);
 TYPE_OF_LIVING.addEventListener('change', () => {
   const selectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
   PRICE.setAttribute('min', `${PriceForLiving[selectedValue]}`);
+  PRICE.value = PriceForLiving[selectedValue];
   PRICE.placeholder = PriceForLiving[selectedValue];
   pristine.validate(PRICE);
 });
@@ -80,6 +83,25 @@ const getPriceMessage = (value) => {
 };
 
 pristine.addValidator(PRICE, priceValidation, getPriceMessage, 100, true);
+
+noUiSlider.create(SLIDER, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: (value) => value.toFixed(),
+    from: (value) => +value
+  }
+});
+
+
+SLIDER.noUiSlider.on('update', () => {
+  PRICE.value = SLIDER.noUiSlider.get();
+});
 
 
 const roomsValidation = () => {
@@ -111,27 +133,6 @@ CHECKOUT.addEventListener('change', () => {
   CHECKIN.value = selectedValueCheckout;
 });
 
-
-noUiSlider.create(SLIDER, {
-  range: {
-    min: 0,
-    max: 100000,
-  },
-  start: 0,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: (value) => value.toFixed(),
-    from: (value) => +value
-  }
-});
-
-SLIDER.noUiSlider.on('update', () => {
-  PRICE.value = SLIDER.noUiSlider.get();
-});
-// PRICE.addEventListener('change', () => {
-//   SLIDER.noUiSlider.set(PRICE.value);
-// });
 
 const blockSubmitButton = () => {
   SUBMIT_BUTTON.disable = true;
