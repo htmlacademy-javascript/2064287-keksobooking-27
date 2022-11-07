@@ -1,3 +1,6 @@
+const ERROR_SHOW_TIME = 7000;
+const BODY = document.querySelector('body');
+
 const getRandomFloatingPointNumber = (min, max, amountCharactersAfterPoint) => {
   if (min < 0 || max < 0 || amountCharactersAfterPoint < 0) {
     return NaN;
@@ -24,4 +27,58 @@ const getRandomArrayElement = (array) => array[getRandomIntegerNumber(0, array.l
 
 const hideElement = (element) => element.classList.add('hidden');
 
-export {getRandomArrayElement, getRandomIntegerNumber, getShuffledArrayWithRandomLength, getRandomFloatingPointNumber, hideElement};
+
+const showError = (message) => {
+  const errorContainer = document.createElement('div');
+  errorContainer.style.zIndex = '100';
+  errorContainer.style.position = 'absolute';
+  errorContainer.style.left = '0';
+  errorContainer.style.top = '0';
+  errorContainer.style.right = '0';
+  errorContainer.style.padding = '10px 3px';
+  errorContainer.style.fontSize = '25px';
+  errorContainer.style.textAlign = 'center';
+  errorContainer.style.backgroundColor = 'red';
+
+  errorContainer.textContent = message;
+
+  document.body.append(errorContainer);
+
+  setTimeout(() => {
+    errorContainer.remove();
+  }, ERROR_SHOW_TIME);
+};
+
+const getStatusMessage = ((element) => {
+  BODY.appendChild(element);
+});
+
+const removeStatusMessage = ((element) => {
+  if (element.parentNode) {
+    element.parentNode.removeChild(element);}
+  // BODY.removeChild(element);
+});
+
+const closeStatusMessageByClick = (statusMessage) => {
+  statusMessage.addEventListener('click', () => {
+    removeStatusMessage(statusMessage);
+  });
+};
+const closeStatusMessageByPress = (statusMessage) => {
+  window.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      removeStatusMessage(statusMessage);
+    }
+  });
+};
+
+const closeStatusMessageByButton = (statusMessage, button) => {
+  button.addEventListener('click', () => {
+    removeStatusMessage(statusMessage);
+  });
+};
+
+
+export {getRandomArrayElement, getRandomIntegerNumber, getShuffledArrayWithRandomLength, getRandomFloatingPointNumber,
+  hideElement, showError, getStatusMessage, removeStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton};

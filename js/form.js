@@ -1,3 +1,7 @@
+import { sendData } from './API.js';
+import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
+import { map, mainPin, TokyoCoordinate } from './map.js';
+
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
 const ADDRESS = FORM.querySelector('#address');
@@ -8,6 +12,11 @@ const TYPE_OF_LIVING = FORM.querySelector('#type');
 const CHECKIN = FORM.querySelector('#timein');
 const CHECKOUT = FORM.querySelector('#timeout');
 const SLIDER = FORM.querySelector('.ad-form__slider');
+const SUBMIT_BUTTON = FORM.querySelector('.ad-form__submit');
+const SUCCESS_MESSAGE = document.querySelector('#success').content.querySelector('.success');
+const ERROR_MESSAGE = document.querySelector('#error').content.querySelector('.error');
+const ERROR_BUTTON = ERROR_MESSAGE.querySelector('.error__button');
+const RESET_BUTTON = FORM.querySelector('.ad-form__reset');
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -43,6 +52,7 @@ pristine.addValidator(TITLE, titleValidation, getTitleMessage, 100, true);
 TYPE_OF_LIVING.addEventListener('change', () => {
   const selectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
   PRICE.setAttribute('min', `${PriceForLiving[selectedValue]}`);
+  PRICE.value = PriceForLiving[selectedValue];
   PRICE.placeholder = PriceForLiving[selectedValue];
   pristine.validate(PRICE);
 });
@@ -70,7 +80,6 @@ const getPriceMessage = (value) => {
 };
 
 pristine.addValidator(PRICE, priceValidation, getPriceMessage, 100, true);
-
 
 const roomsValidation = () => {
   const roomValue = parseInt(ROOMS.value, 10);
@@ -102,33 +111,58 @@ CHECKOUT.addEventListener('change', () => {
 });
 
 
+const blockSubmitButton = () => {
+  SUBMIT_BUTTON.disable = true;
+  SUBMIT_BUTTON.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  SUBMIT_BUTTON.disable = false;
+  SUBMIT_BUTTON.textContent = 'Опубликовать';
+};
+
+const resetForm = () => {
+  FORM.reset();
+  mainPin.setLatLng({
+    lat: TokyoCoordinate.LAT,
+    lng: TokyoCoordinate.LNG
+  });
+  map.setView({
+    lat: TokyoCoordinate.LAT,
+    lng: TokyoCoordinate.LNG
+  }, 10);
+  map.closePopup();
+  //add reset of filtring
+};
+
 FORM.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    FORM.submit();
+    blockSubmitButton();
+    sendData(
+      () => {
+        unblockSubmitButton();
+        getStatusMessage(SUCCESS_MESSAGE);
+        resetForm();
+      },
+      () => {
+        getStatusMessage(ERROR_MESSAGE);
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
   }
 });
 
+closeStatusMessageByClick(SUCCESS_MESSAGE);
+closeStatusMessageByPress(SUCCESS_MESSAGE);
+closeStatusMessageByClick(ERROR_MESSAGE);
+closeStatusMessageByPress(ERROR_MESSAGE);
+closeStatusMessageByButton(ERROR_MESSAGE, ERROR_BUTTON);
 
-noUiSlider.create(SLIDER, {
-  range: {
-    min: 0,
-    max: 100000,
-  },
-  start: 0,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: (value) => value.toFixed(),
-    from: (value) => +value
-  }
+RESET_BUTTON.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
 });
 
-SLIDER.noUiSlider.on('update', () => {
-  PRICE.value = SLIDER.noUiSlider.get();
-});
-PRICE.addEventListener('change', () => {
-  SLIDER.noUiSlider.set(PRICE.value);
-});
-
-export { ADDRESS };
+export { ADDRESS, SLIDER, PRICE };

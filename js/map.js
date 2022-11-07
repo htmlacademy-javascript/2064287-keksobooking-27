@@ -1,19 +1,30 @@
-import { ADDRESS } from './formValidation.js';
-import { generatedRandomAD } from './data.js';
+import { ADDRESS } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeInactive } from './switchingActivity.js';
+import { getData } from './API.js';
+import { showError } from './util.js';
+
+
+const ICOR_URL = './img/pin.svg';
+const ICON_SIZE = [40, 40];
+const ICON_ANCOR = [20, 40];
+
+const SPECIAL_ICON_URL = './img/main-pin.svg';
+const SPECIAL_ICON_SIZE = [52, 52];
+const SPECIAL_ICON_ANCOR = [26, 52];
 
 const TokyoCoordinate = {
   LAT: 35.65283,
   LNG: 139.83947
 };
+
 makeInactive();
 const map = L.map('map-canvas').on('load', () => {
   makeActive();
 })
   .setView({
-    lat: 35.65283,
-    lng: 139.83947
+    lat: TokyoCoordinate.LAT,
+    lng: TokyoCoordinate.LNG
   }, 10);
 
 L.tileLayer(
@@ -24,9 +35,9 @@ L.tileLayer(
 ).addTo(map);
 
 const specialIcon = L.icon({
-  iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52]
+  iconUrl: SPECIAL_ICON_URL,
+  iconSize: SPECIAL_ICON_SIZE,
+  iconAnchor: SPECIAL_ICON_ANCOR
 });
 
 const mainPin = L.marker({
@@ -43,25 +54,30 @@ mainPin.on('moveend', (evt) => {
   ADDRESS.value = `lat: ${lat.toFixed(5)},  lng: ${lng.toFixed(5)}`;
 });
 
-const usualicon = L.icon(
+const usualIcon = L.icon(
   {
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40]
+    iconUrl: ICOR_URL,
+    iconSize: ICON_SIZE,
+    iconAnchor:ICON_ANCOR
   }
 );
 const markerGroup = L.layerGroup().addTo(map);
-const ICONS = generatedRandomAD(10);
 
-ICONS.forEach((icon) => {
-  const marker = L.marker({
-    lat: icon.location.lat,
-    lng: icon.location.lng
-  },
-  {
-    icon: usualicon
-  })
-    .addTo(markerGroup)
-    .bindPopup(getRendedCard(icon));
-  return marker;
-});
+const addToMap = (data) => {
+  data.forEach((icon) => {
+    const marker = L.marker({
+      lat: icon.location.lat,
+      lng: icon.location.lng
+    },
+    {
+      icon: usualIcon
+    })
+      .addTo(markerGroup)
+      .bindPopup(getRendedCard(icon));
+    return marker;
+  });
+};
+
+getData(addToMap, showError);
+
+export {addToMap, map, mainPin, TokyoCoordinate};
