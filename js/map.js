@@ -1,6 +1,6 @@
 import { ADDRESS } from './form.js';
 import { getRendedCard } from './markup.js';
-import { makeActive, makeInactive } from './switchingActivity.js';
+import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switchingActivity.js';
 import { getData } from './API.js';
 import { showError } from './util.js';
 
@@ -18,7 +18,9 @@ const TokyoCoordinate = {
   LNG: 139.83947
 };
 
-makeInactive();
+makeMapFormInactive();
+makeAdFormInactive();
+
 const map = L.map('map-canvas').on('load', () => {
   makeActive();
 })
@@ -78,6 +80,6 @@ const addToMap = (data) => {
   });
 };
 
-getData(addToMap, showError);
+getData(addToMap, (showError, makeMapFormInactive));
 
 export {addToMap, map, mainPin, TokyoCoordinate};
