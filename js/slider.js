@@ -1,8 +1,10 @@
 import { SLIDER, PRICE } from './form.js';
+const MIN_SLIDER_RANGE = 0;
+const MAX_SLIDER_RANGE = 100000;
 noUiSlider.create(SLIDER, {
   range: {
-    min: 0,
-    max: 100000,
+    min: MIN_SLIDER_RANGE,
+    max: MAX_SLIDER_RANGE,
   },
   start: 0,
   step: 1,
