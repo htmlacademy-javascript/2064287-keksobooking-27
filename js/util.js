@@ -78,6 +78,14 @@ const closeStatusMessageByButton = (statusMessage, button) => {
   });
 };
 
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 
 export {getRandomArrayElement, getRandomIntegerNumber, getShuffledArrayWithRandomLength, getRandomFloatingPointNumber,
-  hideElement, showError, getStatusMessage, removeStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton};
+  hideElement, showError, getStatusMessage, removeStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton, debounce};

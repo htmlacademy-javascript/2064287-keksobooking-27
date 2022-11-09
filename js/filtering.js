@@ -1,4 +1,4 @@
-import { addMarkerToMap, map, markerGroup} from './map.js';
+import { addMarkerToMap, map, markerGroup, AMOUNT_ADS_ON_MAP} from './map.js';
 
 
 const MAP_FILTERING_FORM = document.querySelector('.map__filters');
@@ -18,7 +18,7 @@ const sortADs = (info) => {
   MAP_FILTERING_FORM.addEventListener('change', () => {
     map.closePopup();
     markerGroup.clearLayers();
-    const copyData = info.slice(0, 10);
+    const copyData = info.slice(0, AMOUNT_ADS_ON_MAP);
     for (const item of copyData) {
       const isHousingTypeMatched = HOUSING_TYPE.value === item.offer.type || HOUSING_TYPE.value === 'any';
 

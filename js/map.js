@@ -2,7 +2,7 @@ import { ADDRESS } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switchingActivity.js';
 import { getData } from './API.js';
-import { showError } from './util.js';
+import { debounce, showError } from './util.js';
 import { sortADs } from './filtering.js';
 
 
@@ -15,6 +15,7 @@ const SPECIAL_ICON_SIZE = [52, 52];
 const SPECIAL_ICON_ANCOR = [26, 52];
 
 const AMOUNT_ADS_ON_MAP = 10;
+const RERENDER_DELAY = 500;
 
 const TokyoCoordinate = {
   LAT: 35.65283,
@@ -63,7 +64,7 @@ const usualIcon = L.icon(
   {
     iconUrl: ICOR_URL,
     iconSize: ICON_SIZE,
-    iconAnchor:ICON_ANCOR
+    iconAnchor: ICON_ANCOR
   }
 );
 
@@ -91,12 +92,15 @@ const addMarkersToMap = (data) => {
   });
 };
 
-getData ((info)=> {
+getData((info) => {
   addMarkersToMap(info);
-  sortADs(info);
-}, ()=>{
+  debounce(() =>
+    sortADs(info),
+  RERENDER_DELAY
+  );
+}, () => {
   showError();
   makeMapFormInactive();
 });
 
-export {addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup};
+export { addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup, AMOUNT_ADS_ON_MAP };
