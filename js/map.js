@@ -3,6 +3,7 @@ import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switchingActivity.js';
 import { getData } from './API.js';
 import { showError } from './util.js';
+import { filterHouse } from './filtering.js';
 
 
 const ICOR_URL = './img/pin.svg';
@@ -63,23 +64,37 @@ const usualIcon = L.icon(
     iconAnchor:ICON_ANCOR
   }
 );
+
+
 const markerGroup = L.layerGroup().addTo(map);
 
-const addToMap = (data) => {
+
+const addMarkerToMap = (icon) => {
+  const marker = L.marker({
+    lat: icon.location.lat,
+    lng: icon.location.lng
+  },
+  {
+    icon: usualIcon
+  })
+    .addTo(markerGroup)
+    .bindPopup(getRendedCard(icon));
+  return marker;
+};
+
+
+const addMarkersToMap = (data) => {
   data.forEach((icon) => {
-    const marker = L.marker({
-      lat: icon.location.lat,
-      lng: icon.location.lng
-    },
-    {
-      icon: usualIcon
-    })
-      .addTo(markerGroup)
-      .bindPopup(getRendedCard(icon));
-    return marker;
+    addMarkerToMap(icon);
   });
 };
 
-getData(addToMap, (showError, makeMapFormInactive));
+getData ((info)=> {
+  addMarkersToMap(info);
+  filterHouse(info);
+}, ()=>{
+  showError();
+  makeMapFormInactive();
+});
 
-export {addToMap, map, mainPin, TokyoCoordinate};
+export {addMarkerToMap, addMarkersToMap, map, mainPin, TokyoCoordinate, markerGroup};

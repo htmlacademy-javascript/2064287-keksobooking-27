@@ -17,6 +17,7 @@ const SUCCESS_MESSAGE = document.querySelector('#success').content.querySelector
 const ERROR_MESSAGE = document.querySelector('#error').content.querySelector('.error');
 const ERROR_BUTTON = ERROR_MESSAGE.querySelector('.error__button');
 const RESET_BUTTON = FORM.querySelector('.ad-form__reset');
+const MAP_FILTERING_FORM = document.querySelector('.map__filters');
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -123,6 +124,7 @@ const unblockSubmitButton = () => {
 
 const resetForm = () => {
   FORM.reset();
+  MAP_FILTERING_FORM.reset();
   mainPin.setLatLng({
     lat: TokyoCoordinate.LAT,
     lng: TokyoCoordinate.LNG
@@ -132,7 +134,6 @@ const resetForm = () => {
     lng: TokyoCoordinate.LNG
   }, 10);
   map.closePopup();
-  //add reset of filtring
 };
 
 FORM.addEventListener('submit', (evt) => {
@@ -165,4 +166,4 @@ RESET_BUTTON.addEventListener('click', (evt) => {
   resetForm();
 });
 
-export { ADDRESS, SLIDER, PRICE };
+export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM };
