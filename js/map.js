@@ -3,7 +3,7 @@ import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switchingActivity.js';
 import { getData } from './API.js';
 import { showError } from './util.js';
-import { filterHouse } from './filtering.js';
+import { sortADs } from './filtering.js';
 
 
 const ICOR_URL = './img/pin.svg';
@@ -13,6 +13,8 @@ const ICON_ANCOR = [20, 40];
 const SPECIAL_ICON_URL = './img/main-pin.svg';
 const SPECIAL_ICON_SIZE = [52, 52];
 const SPECIAL_ICON_ANCOR = [26, 52];
+
+const AMOUNT_ADS_ON_MAP = 10;
 
 const TokyoCoordinate = {
   LAT: 35.65283,
@@ -84,17 +86,17 @@ const addMarkerToMap = (icon) => {
 
 
 const addMarkersToMap = (data) => {
-  data.forEach((icon) => {
+  data.slice(0, AMOUNT_ADS_ON_MAP).forEach((icon) => {
     addMarkerToMap(icon);
   });
 };
 
 getData ((info)=> {
   addMarkersToMap(info);
-  filterHouse(info);
+  sortADs(info);
 }, ()=>{
   showError();
   makeMapFormInactive();
 });
 
-export {addMarkerToMap, addMarkersToMap, map, mainPin, TokyoCoordinate, markerGroup};
+export {addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup};

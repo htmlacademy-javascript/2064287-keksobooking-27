@@ -56,7 +56,6 @@ const getStatusMessage = ((element) => {
 const removeStatusMessage = ((element) => {
   if (element.parentNode) {
     element.parentNode.removeChild(element);}
-  // BODY.removeChild(element);
 });
 
 const closeStatusMessageByClick = (statusMessage) => {
