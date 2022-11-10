@@ -2,8 +2,8 @@ import { ADDRESS } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switchingActivity.js';
 import { getData } from './API.js';
-import { debounce, showError } from './util.js';
-import { sortADs } from './filtering.js';
+import { showError } from './util.js';
+import { subscrideOnFilterFormChanges } from './filtering.js';
 
 
 const ICOR_URL = './img/pin.svg';
@@ -15,7 +15,7 @@ const SPECIAL_ICON_SIZE = [52, 52];
 const SPECIAL_ICON_ANCOR = [26, 52];
 
 const AMOUNT_ADS_ON_MAP = 10;
-const RERENDER_DELAY = 500;
+
 
 const TokyoCoordinate = {
   LAT: 35.65283,
@@ -92,12 +92,9 @@ const addMarkersToMap = (data) => {
   });
 };
 
-getData((info) => {
-  addMarkersToMap(info);
-  debounce(() =>
-    sortADs(info),
-  RERENDER_DELAY
-  );
+getData((accommodations) => {
+  addMarkersToMap(accommodations);
+  subscrideOnFilterFormChanges(accommodations);
 }, () => {
   showError();
   makeMapFormInactive();
