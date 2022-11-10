@@ -14,11 +14,12 @@ const ELEVATOR = MAP_FILTERING_FORM.querySelector('#filter-elevator');
 const CONDITIONER = MAP_FILTERING_FORM.querySelector('#filter-conditioner');
 
 
-const sortADs = (info) => {
+const sortADs = (data) => {
   MAP_FILTERING_FORM.addEventListener('change', () => {
     map.closePopup();
     markerGroup.clearLayers();
-    const copyData = info.slice(0, AMOUNT_ADS_ON_MAP);
+    const copyData = data.slice(0, AMOUNT_ADS_ON_MAP);
+
     for (const item of copyData) {
       const isHousingTypeMatched = HOUSING_TYPE.value === item.offer.type || HOUSING_TYPE.value === 'any';
 
