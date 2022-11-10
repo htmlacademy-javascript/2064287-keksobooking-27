@@ -43,7 +43,7 @@ const isWasherChecked = (item) => WASHER.checked === false || item.offer.feature
 
 const isElevatorChecked = (item) => ELEVATOR.checked === false || item.offer.features?.includes('elevator');
 
-const isConditionerCheckec = (item) => CONDITIONER.checked === false || item.offer.features?.includes('conditioner');
+const isConditionerChecked = (item) => CONDITIONER.checked === false || item.offer.features?.includes('conditioner');
 
 const subscrideOnFilterFormChanges = (accommodations) => {
   MAP_FILTERING_FORM.addEventListener('change', debounce(() => {
@@ -51,8 +51,8 @@ const subscrideOnFilterFormChanges = (accommodations) => {
     markerGroup.clearLayers();
 
     const filteredAccommodations = accommodations.filter((item) =>
-      (isPriceMatched(item) && isHousingTypeMatched && isRoomsMatched && isGuestsMatched && isWifiChecked
-      && isDishwasherChecked && isParkingChecked && isWasherChecked && isElevatorChecked && isConditionerCheckec));
+      (isPriceMatched(item) && isHousingTypeMatched(item) && isRoomsMatched(item) && isGuestsMatched(item) && isWifiChecked(item)
+      && isDishwasherChecked(item) && isParkingChecked(item) && isWasherChecked(item) && isElevatorChecked(item) && isConditionerChecked(item)));
 
     filteredAccommodations.slice(0, AMOUNT_ADS_ON_MAP).forEach((item) => {
       addMarkerToMap(item);
