@@ -1,7 +1,7 @@
 import { sendData } from './API.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
 import { map, mainPin, TokyoCoordinate } from './map.js';
-import { clearPreviewFields } from './addingPictures.js';
+import { clearPreviewFields } from './adding-pictures.js';
 
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
