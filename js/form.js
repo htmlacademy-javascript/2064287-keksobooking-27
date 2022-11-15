@@ -54,7 +54,6 @@ pristine.addValidator(TITLE, titleValidation, getTitleMessage, 100, true);
 TYPE_OF_LIVING.addEventListener('change', () => {
   const selectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
   PRICE.setAttribute('min', `${PriceForLiving[selectedValue]}`);
-  PRICE.value = PriceForLiving[selectedValue];
   PRICE.placeholder = PriceForLiving[selectedValue];
   pristine.validate(PRICE);
 });
@@ -109,7 +108,8 @@ CHECKIN.addEventListener('change', () => {
 });
 CHECKOUT.addEventListener('change', () => {
   const selectedValueCheckout = CHECKOUT.options[CHECKOUT.selectedIndex].value;
-  CHECKIN.value = selectedValueCheckout;
+  CHECKIN.value =
+selectedValueCheckout;
 });
 
 
@@ -175,4 +175,4 @@ const onResetButtonClick = () => {
 };
 onResetButtonClick();
 
-export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM };
+export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM, PriceForLiving, TYPE_OF_LIVING };
