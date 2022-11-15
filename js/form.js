@@ -1,7 +1,7 @@
 import { sendData } from './API.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
 import { map, mainPin, TokyoCoordinate } from './map.js';
-import { clearPreviewFields } from './addingPictures.js';
+import { clearPreviewFields } from './adding-pictures.js';
 
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
@@ -42,24 +42,23 @@ const RoomsAndCapacity = {
 
 const pristine = new Pristine(FORM, pristineConfig);
 
-const titleValidation = (value) => value.length >= 30 && value.length <= 100;
+const istitleValidated = (value) => value.length >= 30 && value.length <= 100;
 const getTitleMessage = (value) => {
   if (!value.length) {
     return 'Поле обязательно для заполнения';
   }
   return `Необходимо ввести от 30 до 100 символов. Вы ввели: ${value.length}`;
 };
-pristine.addValidator(TITLE, titleValidation, getTitleMessage, 100, true);
+pristine.addValidator(TITLE, istitleValidated, getTitleMessage, 100, true);
 
 TYPE_OF_LIVING.addEventListener('change', () => {
   const selectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
   PRICE.setAttribute('min', `${PriceForLiving[selectedValue]}`);
-  PRICE.value = PriceForLiving[selectedValue];
   PRICE.placeholder = PriceForLiving[selectedValue];
   pristine.validate(PRICE);
 });
 
-const priceValidation = (value) => {
+const isPriceValidated = (value) => {
   if (!value) {
     return false;
   }
@@ -81,9 +80,9 @@ const getPriceMessage = (value) => {
   return 'Максимальная стоимость: 100 000';
 };
 
-pristine.addValidator(PRICE, priceValidation, getPriceMessage, 100, true);
+pristine.addValidator(PRICE, isPriceValidated, getPriceMessage, 100, true);
 
-const roomsValidation = () => {
+const isRoomsValidated = () => {
   const roomValue = parseInt(ROOMS.value, 10);
   const capacityValue = parseInt(CAPACITY.value, 10);
   const roomsValidCapacitiesMap = {
@@ -100,7 +99,7 @@ CAPACITY.addEventListener('change', () => {
   pristine.validate(ROOMS);
 });
 const getRoomsMessage = () => RoomsAndCapacity[ROOMS.value];
-pristine.addValidator(ROOMS, roomsValidation, getRoomsMessage, 100, true);
+pristine.addValidator(ROOMS, isRoomsValidated, getRoomsMessage, 100, true);
 
 
 CHECKIN.addEventListener('change', () => {
@@ -109,7 +108,8 @@ CHECKIN.addEventListener('change', () => {
 });
 CHECKOUT.addEventListener('change', () => {
   const selectedValueCheckout = CHECKOUT.options[CHECKOUT.selectedIndex].value;
-  CHECKIN.value = selectedValueCheckout;
+  CHECKIN.value =
+selectedValueCheckout;
 });
 
 
@@ -175,4 +175,4 @@ const onResetButtonClick = () => {
 };
 onResetButtonClick();
 
-export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM };
+export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM, PriceForLiving, TYPE_OF_LIVING };
