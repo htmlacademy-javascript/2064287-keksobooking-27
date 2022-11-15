@@ -1,6 +1,7 @@
 import { sendData } from './API.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
 import { map, mainPin, TokyoCoordinate } from './map.js';
+import { clearPreviewFields } from './addingPictures.js';
 
 const FORM = document.querySelector('.ad-form');
 const TITLE = FORM.querySelector('#title');
@@ -134,26 +135,31 @@ const resetForm = () => {
     lng: TokyoCoordinate.LNG
   }, 10);
   map.closePopup();
+  clearPreviewFields();
 };
 
-FORM.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    blockSubmitButton();
-    sendData(
-      () => {
-        unblockSubmitButton();
-        getStatusMessage(SUCCESS_MESSAGE);
-        resetForm();
-      },
-      () => {
-        getStatusMessage(ERROR_MESSAGE);
-        unblockSubmitButton();
-      },
-      new FormData(evt.target),
-    );
-  }
-});
+const onFormSubmit = () => {
+  FORM.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (pristine.validate()) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          unblockSubmitButton();
+          getStatusMessage(SUCCESS_MESSAGE);
+          resetForm();
+        },
+        () => {
+          getStatusMessage(ERROR_MESSAGE);
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+onFormSubmit();
 
 closeStatusMessageByClick(SUCCESS_MESSAGE);
 closeStatusMessageByPress(SUCCESS_MESSAGE);
@@ -161,9 +167,12 @@ closeStatusMessageByClick(ERROR_MESSAGE);
 closeStatusMessageByPress(ERROR_MESSAGE);
 closeStatusMessageByButton(ERROR_MESSAGE, ERROR_BUTTON);
 
-RESET_BUTTON.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
+const onResetButtonClick = () => {
+  RESET_BUTTON.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+  });
+};
+onResetButtonClick();
 
 export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM };

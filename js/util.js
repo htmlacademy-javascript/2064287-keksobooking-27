@@ -86,6 +86,12 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
+const isFileTypeMatches = (file, filenameExtensions) => {
+  const fileName = file.name.toLowerCase();
+  return filenameExtensions.some((it) => fileName.endsWith(it));
+};
+
 
 export {getRandomArrayElement, getRandomIntegerNumber, getShuffledArrayWithRandomLength, getRandomFloatingPointNumber,
-  hideElement, showError, getStatusMessage, removeStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton, debounce};
+  hideElement, showError, getStatusMessage, removeStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton,
+  debounce, isFileTypeMatches};
