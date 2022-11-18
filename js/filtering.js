@@ -14,15 +14,17 @@ const washer = mapFilteringForm.querySelector('#filter-washer');
 const elevator = mapFilteringForm.querySelector('#filter-elevator');
 const conditioner = mapFilteringForm.querySelector('#filter-conditioner');
 const RENDER_DELAY = 500;
+const LOW_PRICE_RANGE = 10000;
+const HIGH_PRISE_RANGE = 50000;
 
 
 const isPriceMatched = (item) => {
   let priceRange;
-  if (item.offer.price >= 10000 && item.offer.price < 50000) {
+  if (item.offer.price >= LOW_PRICE_RANGE && item.offer.price < HIGH_PRISE_RANGE) {
     priceRange = 'middle';
-  } else if (item.offer.price < 10000) {
+  } else if (item.offer.price < LOW_PRICE_RANGE) {
     priceRange = 'low';
-  } else if (item.offer.price >= 50000) {
+  } else if (item.offer.price >= HIGH_PRISE_RANGE) {
     priceRange = 'high';
   }
   return housingPrice.value === priceRange || housingPrice.value === 'any';

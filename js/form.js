@@ -1,4 +1,4 @@
-import { sendData } from './api.js';
+import { sendData } from './server.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
 import { map, mainPin, TokyoCoordinate } from './map.js';
 import { clearPreviewFields } from './adding-pictures.js';
@@ -26,6 +26,12 @@ const pristineConfig = {
   errorTextParent: 'ad-form__element',
   errorTextClass: 'text-help'
 };
+
+const MIN_AMOUNT_LETTERS_IN_TITLE = 30;
+const MAX_AMOUNT_LETTERS_IN_TITLE = 100;
+
+const MAX_PRISE = 100000;
+
 const PriceForLiving = {
   'bungalow': 0,
   'flat': 1000,
@@ -42,7 +48,7 @@ const RoomsAndCapacity = {
 
 const pristine = new Pristine(form, pristineConfig);
 
-const istitleValidated = (value) => value.length >= 30 && value.length <= 100;
+const istitleValidated = (value) => value.length >= MIN_AMOUNT_LETTERS_IN_TITLE && value.length <= MAX_AMOUNT_LETTERS_IN_TITLE;
 const getTitleMessage = (value) => {
   if (!value.length) {
     return 'Поле обязательно для заполнения';
@@ -65,7 +71,7 @@ const isPriceValidated = (value) => {
   const selectedValueInTypeOfLiving = typeOfLiving.options[typeOfLiving.selectedIndex].value;
   const minimalValue = PriceForLiving[selectedValueInTypeOfLiving];
 
-  return +value >= minimalValue && +value <= 100000;
+  return +value >= minimalValue && +value <= MAX_PRISE;
 };
 
 const getPriceMessage = (value) => {
