@@ -1,6 +1,6 @@
 import { sendData } from './server.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
-import { map, mainPin, TokyoCoordinate, addMarkersToMap, markerGroup } from './map.js';
+import { map, mainPin, TokyoCoordinate, } from './map.js';
 import { clearPreviewFields } from './adding-pictures.js';
 
 const form = document.querySelector('.ad-form');
@@ -155,10 +155,6 @@ const onFormSubmit = () => {
           getStatusMessage(successMessage);
           resetForm();
           slider.noUiSlider.reset();
-          map.closePopup();
-          markerGroup.clearLayers();
-          addMarkersToMap();
-
         },
         () => {
           getStatusMessage(errorMessage);
@@ -183,9 +179,6 @@ const onResetButtonClick = () => {
     evt.preventDefault();
     resetForm();
     slider.noUiSlider.reset();
-    map.closePopup();
-    markerGroup.clearLayers();
-    addMarkersToMap();
   });
 };
 onResetButtonClick();

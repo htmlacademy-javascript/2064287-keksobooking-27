@@ -48,7 +48,8 @@ const isElevatorChecked = (item) => elevator.checked === false || item.offer.fea
 const isConditionerChecked = (item) => conditioner.checked === false || item.offer.features?.includes('conditioner');
 
 const subscrideOnFilterFormChanges = (accommodations) => {
-  mapFilteringForm.addEventListener('change', debounce(() => {
+
+  const rerenderMarkers = debounce(() => {
     map.closePopup();
     markerGroup.clearLayers();
 
@@ -59,6 +60,9 @@ const subscrideOnFilterFormChanges = (accommodations) => {
     filteredAccommodations.slice(0, AMOUNT_ADS_ON_MAP).forEach((item) => {
       addMarkerToMap(item);
     });
-  }, RENDER_DELAY));
+  }, RENDER_DELAY);
+
+  mapFilteringForm.addEventListener('change', rerenderMarkers);
+  mapFilteringForm.addEventListener('reset', rerenderMarkers);
 };
 export { subscrideOnFilterFormChanges };
