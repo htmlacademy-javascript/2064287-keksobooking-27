@@ -17,6 +17,8 @@ const SPECIAL_ICON_ANCOR = [26, 52];
 const AMOUNT_ADS_ON_MAP = 10;
 const DIGITS_AFTER_POINT = 5;
 
+const ERROR_MESSAGE_FROM_SERVER = 'Не удалось соединиться с сервером. Попробуйте ещё раз';
+
 
 const TokyoCoordinate = {
   LAT: 35.65283,
@@ -97,8 +99,8 @@ getData((accommodations) => {
   addMarkersToMap(accommodations);
   subscrideOnFilterFormChanges(accommodations);
 }, () => {
-  showError();
+  showError(ERROR_MESSAGE_FROM_SERVER);
   makeMapFormInactive();
 });
 
-export { addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup, AMOUNT_ADS_ON_MAP };
+export { addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup, AMOUNT_ADS_ON_MAP, addMarkersToMap };
