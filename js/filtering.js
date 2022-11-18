@@ -48,21 +48,26 @@ const isElevatorChecked = (item) => elevator.checked === false || item.offer.fea
 const isConditionerChecked = (item) => conditioner.checked === false || item.offer.features?.includes('conditioner');
 
 const subscrideOnFilterFormChanges = (accommodations) => {
-
-  const rerenderMarkers = debounce(() => {
+  const onMapFilteringFormModify = debounce(() => {
     map.closePopup();
     markerGroup.clearLayers();
 
-    const filteredAccommodations = accommodations.filter((item) =>
-      (isPriceMatched(item) && isHousingTypeMatched(item) && isRoomsMatched(item) && isGuestsMatched(item) && isWifiChecked(item)
-      && isDishwasherChecked(item) && isParkingChecked(item) && isWasherChecked(item) && isElevatorChecked(item) && isConditionerChecked(item)));
+    let markersCount = 0;
+    for (const item of accommodations) {
+      if (markersCount === AMOUNT_ADS_ON_MAP) {
+        return;
+      }
 
-    filteredAccommodations.slice(0, AMOUNT_ADS_ON_MAP).forEach((item) => {
-      addMarkerToMap(item);
-    });
+      if (isPriceMatched(item) && isHousingTypeMatched(item) && isRoomsMatched(item) && isGuestsMatched(item) && isWifiChecked(item)
+        && isDishwasherChecked(item) && isParkingChecked(item) && isWasherChecked(item) && isElevatorChecked(item) && isConditionerChecked(item)) {
+        addMarkerToMap(item);
+        markersCount++;
+      }
+    }
+
   }, RENDER_DELAY);
 
-  mapFilteringForm.addEventListener('change', rerenderMarkers);
-  mapFilteringForm.addEventListener('reset', rerenderMarkers);
+  mapFilteringForm.addEventListener('change', onMapFilteringFormModify);
+  mapFilteringForm.addEventListener('reset', onMapFilteringFormModify);
 };
 export { subscrideOnFilterFormChanges };

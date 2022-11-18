@@ -21,6 +21,8 @@ slider.noUiSlider.on('update', () => {
   price.value = slider.noUiSlider.get();
 });
 
-price.addEventListener('change', () => {
+const onPriceChange = () => {
   slider.noUiSlider.set(price.value);
-});
+};
+
+price.addEventListener('change', onPriceChange);

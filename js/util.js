@@ -35,24 +35,30 @@ const removeStatusMessage = ((element) => {
     element.parentNode.removeChild(element);}
 });
 
+const onStatusMessageClick = (evt) => {
+  removeStatusMessage(evt.target);
+};
+
 const closeStatusMessageByClick = (statusMessage) => {
-  statusMessage.addEventListener('click', () => {
+  statusMessage.addEventListener('click', onStatusMessageClick);
+};
+
+const onWindowKeydown = (statusMessage) => (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
     removeStatusMessage(statusMessage);
-  });
+  }
 };
 const closeStatusMessageByPress = (statusMessage) => {
-  window.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      removeStatusMessage(statusMessage);
-    }
-  });
+  window.addEventListener('keydown', onWindowKeydown(statusMessage));
+};
+
+const onButtonClick = (statusMessage) => {
+  removeStatusMessage(statusMessage);
 };
 
 const closeStatusMessageByButton = (statusMessage, button) => {
-  button.addEventListener('click', () => {
-    removeStatusMessage(statusMessage);
-  });
+  button.addEventListener('click', onButtonClick(statusMessage));
 };
 
 const debounce = (callback, timeoutDelay) => {

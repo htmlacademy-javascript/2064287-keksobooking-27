@@ -11,29 +11,29 @@ const photoPreviewTag = document.createElement('img');
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const setAvatarImg = () => {
-  avatarInput.addEventListener('change', () => {
-    const file = avatarInput.files[0];
-    isFileTypeMatches(file, FILE_TYPES);
+const onAvatarInputChange = () => {
+  const file = avatarInput.files[0];
+  isFileTypeMatches(file, FILE_TYPES);
 
-    if (isFileTypeMatches) {
-      avatarPreview.src = URL.createObjectURL(file);
-    }
-  });
+  if (isFileTypeMatches) {
+    avatarPreview.src = URL.createObjectURL(file);
+  }
 };
 
-const setPhotoImg = () => {
-  photoInput.addEventListener('change', () => {
-    const file = photoInput.files[0];
-    isFileTypeMatches(file, FILE_TYPES);
+avatarInput.addEventListener('change', onAvatarInputChange);
 
-    if (isFileTypeMatches) {
-      photoPreviewTag.src = URL.createObjectURL(file);
-      photoPreviewTag.style.width = '100%';
-      photoPreview.appendChild(photoPreviewTag);
-    }
-  });
+const onPhotoInputChange = () => {
+  const file = photoInput.files[0];
+  isFileTypeMatches(file, FILE_TYPES);
+
+  if (isFileTypeMatches) {
+    photoPreviewTag.src = URL.createObjectURL(file);
+    photoPreviewTag.style.width = '100%';
+    photoPreview.appendChild(photoPreviewTag);
+  }
 };
+
+photoInput.addEventListener('change', onPhotoInputChange);
 
 const clearPreviewFields = () => {
   avatarPreview.src = avatarDefaultImage;
@@ -43,7 +43,5 @@ const clearPreviewFields = () => {
   }
 };
 
-setAvatarImg();
-setPhotoImg();
 
 export { clearPreviewFields };
