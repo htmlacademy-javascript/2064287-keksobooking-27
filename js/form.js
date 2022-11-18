@@ -3,22 +3,22 @@ import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress,
 import { map, mainPin, TokyoCoordinate } from './map.js';
 import { clearPreviewFields } from './adding-pictures.js';
 
-const FORM = document.querySelector('.ad-form');
-const TITLE = FORM.querySelector('#title');
-const ADDRESS = FORM.querySelector('#address');
-const PRICE = FORM.querySelector('#price');
-const ROOMS = FORM.querySelector('#room_number');
-const CAPACITY = FORM.querySelector('#capacity');
-const TYPE_OF_LIVING = FORM.querySelector('#type');
-const CHECKIN = FORM.querySelector('#timein');
-const CHECKOUT = FORM.querySelector('#timeout');
-const SLIDER = FORM.querySelector('.ad-form__slider');
-const SUBMIT_BUTTON = FORM.querySelector('.ad-form__submit');
-const SUCCESS_MESSAGE = document.querySelector('#success').content.querySelector('.success');
-const ERROR_MESSAGE = document.querySelector('#error').content.querySelector('.error');
-const ERROR_BUTTON = ERROR_MESSAGE.querySelector('.error__button');
-const RESET_BUTTON = FORM.querySelector('.ad-form__reset');
-const MAP_FILTERING_FORM = document.querySelector('.map__filters');
+const form = document.querySelector('.ad-form');
+const title = form.querySelector('#title');
+const address = form.querySelector('#address');
+const price = form.querySelector('#price');
+const rooms = form.querySelector('#room_number');
+const capacity = form.querySelector('#capacity');
+const typeOfLiving = form.querySelector('#type');
+const checkIn = form.querySelector('#timein');
+const checkOut = form.querySelector('#timeout');
+const slider = form.querySelector('.ad-form__slider');
+const submitButton = form.querySelector('.ad-form__submit');
+const successMessage = document.querySelector('#success').content.querySelector('.success');
+const errorMessage = document.querySelector('#error').content.querySelector('.error');
+const errorButton = errorMessage.querySelector('.error__button');
+const resetButton = form.querySelector('.ad-form__reset');
+const mapFilteringFrom = document.querySelector('.map__filters');
 
 const pristineConfig = {
   classTo: 'ad-form__element',
@@ -40,7 +40,7 @@ const RoomsAndCapacity = {
   100: '«не для гостей»'
 };
 
-const pristine = new Pristine(FORM, pristineConfig);
+const pristine = new Pristine(form, pristineConfig);
 
 const istitleValidated = (value) => value.length >= 30 && value.length <= 100;
 const getTitleMessage = (value) => {
@@ -49,27 +49,27 @@ const getTitleMessage = (value) => {
   }
   return `Необходимо ввести от 30 до 100 символов. Вы ввели: ${value.length}`;
 };
-pristine.addValidator(TITLE, istitleValidated, getTitleMessage, 100, true);
+pristine.addValidator(title, istitleValidated, getTitleMessage, 100, true);
 
-TYPE_OF_LIVING.addEventListener('change', () => {
-  const selectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
-  PRICE.setAttribute('min', `${PriceForLiving[selectedValue]}`);
-  PRICE.placeholder = PriceForLiving[selectedValue];
-  pristine.validate(PRICE);
+typeOfLiving.addEventListener('change', () => {
+  const selectedValue = typeOfLiving.options[typeOfLiving.selectedIndex].value;
+  price.setAttribute('min', `${PriceForLiving[selectedValue]}`);
+  price.placeholder = PriceForLiving[selectedValue];
+  pristine.validate(price);
 });
 
 const isPriceValidated = (value) => {
   if (!value) {
     return false;
   }
-  const selectedValueInTypeOfLiving = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
+  const selectedValueInTypeOfLiving = typeOfLiving.options[typeOfLiving.selectedIndex].value;
   const minimalValue = PriceForLiving[selectedValueInTypeOfLiving];
 
   return +value >= minimalValue && +value <= 100000;
 };
 
 const getPriceMessage = (value) => {
-  const typeOfLivingSelectedValue = TYPE_OF_LIVING.options[TYPE_OF_LIVING.selectedIndex].value;
+  const typeOfLivingSelectedValue = typeOfLiving.options[typeOfLiving.selectedIndex].value;
 
   if (!value) {
     return 'Поле обязательно для заполнения';
@@ -80,11 +80,11 @@ const getPriceMessage = (value) => {
   return 'Максимальная стоимость: 100 000';
 };
 
-pristine.addValidator(PRICE, isPriceValidated, getPriceMessage, 100, true);
+pristine.addValidator(price, isPriceValidated, getPriceMessage, 100, true);
 
 const isRoomsValidated = () => {
-  const roomValue = parseInt(ROOMS.value, 10);
-  const capacityValue = parseInt(CAPACITY.value, 10);
+  const roomValue = parseInt(rooms.value, 10);
+  const capacityValue = parseInt(capacity.value, 10);
   const roomsValidCapacitiesMap = {
     1: [1],
     2: [1, 2],
@@ -95,37 +95,37 @@ const isRoomsValidated = () => {
   const validCapacityValuesForRoom = roomsValidCapacitiesMap[roomValue];
   return validCapacityValuesForRoom.includes(capacityValue);
 };
-CAPACITY.addEventListener('change', () => {
-  pristine.validate(ROOMS);
+capacity.addEventListener('change', () => {
+  pristine.validate(rooms);
 });
-const getRoomsMessage = () => RoomsAndCapacity[ROOMS.value];
-pristine.addValidator(ROOMS, isRoomsValidated, getRoomsMessage, 100, true);
+const getRoomsMessage = () => RoomsAndCapacity[rooms.value];
+pristine.addValidator(rooms, isRoomsValidated, getRoomsMessage, 100, true);
 
 
-CHECKIN.addEventListener('change', () => {
-  const selectedValueCheckin = CHECKIN.options[CHECKIN.selectedIndex].value;
-  CHECKOUT.value = selectedValueCheckin;
+checkIn.addEventListener('change', () => {
+  const selectedValueCheckin = checkIn.options[checkIn.selectedIndex].value;
+  checkOut.value = selectedValueCheckin;
 });
-CHECKOUT.addEventListener('change', () => {
-  const selectedValueCheckout = CHECKOUT.options[CHECKOUT.selectedIndex].value;
-  CHECKIN.value =
+checkOut.addEventListener('change', () => {
+  const selectedValueCheckout = checkOut.options[checkOut.selectedIndex].value;
+  checkIn.value =
 selectedValueCheckout;
 });
 
 
 const blockSubmitButton = () => {
-  SUBMIT_BUTTON.disable = true;
-  SUBMIT_BUTTON.textContent = 'Публикую...';
+  submitButton.disable = true;
+  submitButton.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  SUBMIT_BUTTON.disable = false;
-  SUBMIT_BUTTON.textContent = 'Опубликовать';
+  submitButton.disable = false;
+  submitButton.textContent = 'Опубликовать';
 };
 
 const resetForm = () => {
-  FORM.reset();
-  MAP_FILTERING_FORM.reset();
+  form.reset();
+  mapFilteringFrom.reset();
   mainPin.setLatLng({
     lat: TokyoCoordinate.LAT,
     lng: TokyoCoordinate.LNG
@@ -139,18 +139,18 @@ const resetForm = () => {
 };
 
 const onFormSubmit = () => {
-  FORM.addEventListener('submit', (evt) => {
+  form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (pristine.validate()) {
       blockSubmitButton();
       sendData(
         () => {
           unblockSubmitButton();
-          getStatusMessage(SUCCESS_MESSAGE);
+          getStatusMessage(successMessage);
           resetForm();
         },
         () => {
-          getStatusMessage(ERROR_MESSAGE);
+          getStatusMessage(errorMessage);
           unblockSubmitButton();
         },
         new FormData(evt.target),
@@ -161,18 +161,18 @@ const onFormSubmit = () => {
 
 onFormSubmit();
 
-closeStatusMessageByClick(SUCCESS_MESSAGE);
-closeStatusMessageByPress(SUCCESS_MESSAGE);
-closeStatusMessageByClick(ERROR_MESSAGE);
-closeStatusMessageByPress(ERROR_MESSAGE);
-closeStatusMessageByButton(ERROR_MESSAGE, ERROR_BUTTON);
+closeStatusMessageByClick(successMessage);
+closeStatusMessageByPress(successMessage);
+closeStatusMessageByClick(errorMessage);
+closeStatusMessageByPress(errorMessage);
+closeStatusMessageByButton(errorMessage, errorButton);
 
 const onResetButtonClick = () => {
-  RESET_BUTTON.addEventListener('click', (evt) => {
+  resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
   });
 };
 onResetButtonClick();
 
-export { ADDRESS, SLIDER, PRICE, MAP_FILTERING_FORM, PriceForLiving, TYPE_OF_LIVING };
+export { address, slider, price, mapFilteringFrom, PriceForLiving, typeOfLiving };
