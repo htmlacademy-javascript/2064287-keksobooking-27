@@ -1,5 +1,5 @@
 const ERROR_SHOW_TIME = 7000;
-const BODY = document.querySelector('body');
+const body = document.querySelector('body');
 
 
 const hideElement = (element) => element.classList.add('hidden');
@@ -27,7 +27,7 @@ const showError = (message) => {
 };
 
 const getStatusMessage = ((element) => {
-  BODY.appendChild(element);
+  body.appendChild(element);
 });
 
 const removeStatusMessage = ((element) => {

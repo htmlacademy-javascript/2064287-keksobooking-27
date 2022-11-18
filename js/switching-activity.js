@@ -1,38 +1,38 @@
-const AD_FORM = document.querySelector('.ad-form');
-const AD_FORMS_ELEMENTS = AD_FORM.querySelectorAll('fieldset');
+const adForm = document.querySelector('.ad-form');
+const adFormsElements = adForm.querySelectorAll('fieldset');
 
-const MAP_FORM = document.querySelector('.map__filters');
-const MAP_FORMS_FILTER = MAP_FORM.querySelectorAll('.map__filter');
-const MAP_FORM_FIELDSET = MAP_FORM.querySelector('.map__features');
+const mapForm = document.querySelector('.map__filters');
+const mapFormsFilter = mapForm.querySelectorAll('.map__filter');
+const mapFormFieldset = mapForm.querySelector('.map__features');
 
 const makeAdFormInactive = () => {
-  AD_FORM.classList.add('ad-form--disabled');
+  adForm.classList.add('ad-form--disabled');
 
-  AD_FORMS_ELEMENTS.forEach((element) => {
+  adFormsElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
 };
 
 const makeMapFormInactive = () => {
-  MAP_FORM.classList.add('map__filters--disabled');
+  mapForm.classList.add('map__filters--disabled');
 
-  MAP_FORMS_FILTER.forEach((element) => {
+  mapFormsFilter.forEach((element) => {
     element.setAttribute('disabled', true);
   });
-  MAP_FORM_FIELDSET.setAttribute('disabled', true);
+  mapFormFieldset.setAttribute('disabled', true);
 };
 
 const makeActive = () => {
-  AD_FORM.classList.remove('ad-form--disabled');
-  MAP_FORM.classList.remove('map__filters--disabled');
-  AD_FORMS_ELEMENTS.forEach((element) => {
+  adForm.classList.remove('ad-form--disabled');
+  mapForm.classList.remove('map__filters--disabled');
+  adFormsElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
 
-  MAP_FORMS_FILTER.forEach((element) => {
+  mapFormsFilter.forEach((element) => {
     element.removeAttribute('disabled');
   });
-  MAP_FORM_FIELDSET.removeAttribute('disabled');
+  mapFormFieldset.removeAttribute('disabled');
 };
 
 export { makeAdFormInactive, makeMapFormInactive, makeActive };

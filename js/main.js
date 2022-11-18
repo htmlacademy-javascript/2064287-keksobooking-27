@@ -3,6 +3,6 @@ import './switching-activity.js';
 import './form.js';
 import './map.js';
 import './slider.js';
-import './API.js';
+import './api.js';
 import './filtering.js';
 import './adding-pictures.js';

@@ -1,7 +1,7 @@
-import { ADDRESS } from './form.js';
+import { address } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switching-activity.js';
-import { getData } from './API.js';
+import { getData } from './api.js';
 import { showError } from './util.js';
 import { subscrideOnFilterFormChanges } from './filtering.js';
 
@@ -57,7 +57,7 @@ const mainPin = L.marker({
 
 mainPin.on('moveend', (evt) => {
   const { lat, lng } = evt.target.getLatLng();
-  ADDRESS.value = `lat: ${lat.toFixed(5)},  lng: ${lng.toFixed(5)}`;
+  address.value = `lat: ${lat.toFixed(5)},  lng: ${lng.toFixed(5)}`;
 });
 
 const usualIcon = L.icon(

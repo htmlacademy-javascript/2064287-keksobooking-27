@@ -1,14 +1,14 @@
-import { SLIDER, PRICE, PriceForLiving, TYPE_OF_LIVING } from './form.js';
+import { slider, price, PriceForLiving, typeOfLiving } from './form.js';
 
 const MAX_SLIDER_RANGE = 100000;
 
 
-noUiSlider.create(SLIDER, {
+noUiSlider.create(slider, {
   range: {
-    min: PriceForLiving[TYPE_OF_LIVING.value],
+    min: PriceForLiving[typeOfLiving.value],
     max: MAX_SLIDER_RANGE,
   },
-  start: PriceForLiving[TYPE_OF_LIVING.value],
+  start: PriceForLiving[typeOfLiving.value],
   step: 1,
   connect: 'lower',
   format: {
@@ -17,10 +17,10 @@ noUiSlider.create(SLIDER, {
   }
 });
 
-SLIDER.noUiSlider.on('update', () => {
-  PRICE.value = SLIDER.noUiSlider.get();
+slider.noUiSlider.on('update', () => {
+  price.value = slider.noUiSlider.get();
 });
 
-PRICE.addEventListener('change', () => {
-  SLIDER.noUiSlider.set(PRICE.value);
+price.addEventListener('change', () => {
+  slider.noUiSlider.set(price.value);
 });

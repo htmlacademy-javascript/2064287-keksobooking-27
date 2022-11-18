@@ -2,17 +2,17 @@ import { addMarkerToMap, map, markerGroup, AMOUNT_ADS_ON_MAP } from './map.js';
 import { debounce } from './util.js';
 
 
-const MAP_FILTERING_FORM = document.querySelector('.map__filters');
-const HOUSING_TYPE = MAP_FILTERING_FORM.querySelector('#housing-type');
-const HOUSING_PRICE = MAP_FILTERING_FORM.querySelector('#housing-price');
-const HOUSING_ROOMS = MAP_FILTERING_FORM.querySelector('#housing-rooms');
-const HOUSING_GUESTS = MAP_FILTERING_FORM.querySelector('#housing-guests');
-const WIFI = MAP_FILTERING_FORM.querySelector('#filter-wifi');
-const DISHWASHER = MAP_FILTERING_FORM.querySelector('#filter-dishwasher');
-const PARKING = MAP_FILTERING_FORM.querySelector('#filter-parking');
-const WASHER = MAP_FILTERING_FORM.querySelector('#filter-washer');
-const ELEVATOR = MAP_FILTERING_FORM.querySelector('#filter-elevator');
-const CONDITIONER = MAP_FILTERING_FORM.querySelector('#filter-conditioner');
+const mapFilteringForm = document.querySelector('.map__filters');
+const housingType = mapFilteringForm.querySelector('#housing-type');
+const housingPrice = mapFilteringForm.querySelector('#housing-price');
+const housingRooms = mapFilteringForm.querySelector('#housing-rooms');
+const housingGuests = mapFilteringForm.querySelector('#housing-guests');
+const wifi = mapFilteringForm.querySelector('#filter-wifi');
+const dishwasher = mapFilteringForm.querySelector('#filter-dishwasher');
+const parking = mapFilteringForm.querySelector('#filter-parking');
+const washer = mapFilteringForm.querySelector('#filter-washer');
+const elevator = mapFilteringForm.querySelector('#filter-elevator');
+const conditioner = mapFilteringForm.querySelector('#filter-conditioner');
 const RENDER_DELAY = 500;
 
 
@@ -25,28 +25,28 @@ const isPriceMatched = (item) => {
   } else if (item.offer.price >= 50000) {
     priceRange = 'high';
   }
-  return HOUSING_PRICE.value === priceRange || HOUSING_PRICE.value === 'any';
+  return housingPrice.value === priceRange || housingPrice.value === 'any';
 };
-const isHousingTypeMatched = (item) => HOUSING_TYPE.value === item.offer.type || HOUSING_TYPE.value === 'any';
+const isHousingTypeMatched = (item) => housingType.value === item.offer.type || housingType.value === 'any';
 
-const isRoomsMatched = (item) => +HOUSING_ROOMS.value === item.offer.rooms || HOUSING_ROOMS.value === 'any';
+const isRoomsMatched = (item) => +housingRooms.value === item.offer.rooms || housingRooms.value === 'any';
 
-const isGuestsMatched = (item) => +HOUSING_GUESTS.value === item.offer.guests || HOUSING_GUESTS.value === 'any';
+const isGuestsMatched = (item) => +housingGuests.value === item.offer.guests || housingGuests.value === 'any';
 
-const isWifiChecked = (item) => WIFI.checked === false || item.offer.features?.includes('wifi');
+const isWifiChecked = (item) => wifi.checked === false || item.offer.features?.includes('wifi');
 
-const isDishwasherChecked = (item) => DISHWASHER.checked === false || item.offer.features?.includes('dishwasher');
+const isDishwasherChecked = (item) => dishwasher.checked === false || item.offer.features?.includes('dishwasher');
 
-const isParkingChecked = (item) => PARKING.checked === false || item.offer.features?.includes('parking');
+const isParkingChecked = (item) => parking.checked === false || item.offer.features?.includes('parking');
 
-const isWasherChecked = (item) => WASHER.checked === false || item.offer.features?.includes('washer');
+const isWasherChecked = (item) => washer.checked === false || item.offer.features?.includes('washer');
 
-const isElevatorChecked = (item) => ELEVATOR.checked === false || item.offer.features?.includes('elevator');
+const isElevatorChecked = (item) => elevator.checked === false || item.offer.features?.includes('elevator');
 
-const isConditionerChecked = (item) => CONDITIONER.checked === false || item.offer.features?.includes('conditioner');
+const isConditionerChecked = (item) => conditioner.checked === false || item.offer.features?.includes('conditioner');
 
 const subscrideOnFilterFormChanges = (accommodations) => {
-  MAP_FILTERING_FORM.addEventListener('change', debounce(() => {
+  mapFilteringForm.addEventListener('change', debounce(() => {
     map.closePopup();
     markerGroup.clearLayers();
 
