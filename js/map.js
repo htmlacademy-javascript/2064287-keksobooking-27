@@ -1,7 +1,7 @@
 import { address } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switching-activity.js';
-import { getData } from './API.js';
+import { getData } from './api.js';
 import { showError } from './util.js';
 import { subscrideOnFilterFormChanges } from './filtering.js';
 

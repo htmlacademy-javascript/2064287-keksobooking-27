@@ -1,4 +1,4 @@
-import { sendData } from './API.js';
+import { sendData } from './api.js';
 import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
 import { map, mainPin, TokyoCoordinate } from './map.js';
 import { clearPreviewFields } from './adding-pictures.js';
