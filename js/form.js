@@ -1,5 +1,7 @@
 import { sendData } from './server.js';
-import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
+import { getSuccessMessage, getErrorMessage, successMessage, errorMessage } from './popup-message.js';
+// import { getStatusMessage, errorMessage } from './popup-message.js';
+
 import { map, mainPin, TokyoCoordinate, } from './map.js';
 import { clearPreviewFields } from './adding-pictures.js';
 
@@ -14,9 +16,6 @@ const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
 const slider = form.querySelector('.ad-form__slider');
 const submitButton = form.querySelector('.ad-form__submit');
-const successMessage = document.querySelector('#success').content.querySelector('.success');
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
-const errorButton = errorMessage.querySelector('.error__button');
 const resetButton = form.querySelector('.ad-form__reset');
 const mapFilteringFrom = document.querySelector('.map__filters');
 
@@ -157,12 +156,12 @@ const onFormSubmit = (evt) => {
     sendData(
       () => {
         unblockSubmitButton();
-        getStatusMessage(successMessage);
+        getSuccessMessage(successMessage);
         resetForm();
         slider.noUiSlider.reset();
       },
       () => {
-        getStatusMessage(errorMessage);
+        getErrorMessage(errorMessage);
         unblockSubmitButton();
       },
       new FormData(evt.target),
@@ -172,13 +171,6 @@ const onFormSubmit = (evt) => {
 
 form.addEventListener('submit', onFormSubmit);
 
-
-closeStatusMessageByClick(successMessage);
-closeStatusMessageByPress(successMessage);
-closeStatusMessageByClick(errorMessage);
-closeStatusMessageByPress(errorMessage);
-closeStatusMessageByButton(errorMessage, errorButton);
-
 const onResetButtonClick = (evt) => {
   evt.preventDefault();
   resetForm();
@@ -186,4 +178,4 @@ const onResetButtonClick = (evt) => {
 };
 resetButton.addEventListener('click', onResetButtonClick);
 
-export { address, slider, price, mapFilteringFrom, PriceForLiving, typeOfLiving, };
+export { address, slider, price, mapFilteringFrom, PriceForLiving, typeOfLiving};

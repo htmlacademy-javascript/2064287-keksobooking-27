@@ -1,5 +1,4 @@
 const ERROR_SHOW_TIME = 7000;
-const body = document.querySelector('body');
 
 
 const hideElement = (element) => element.classList.add('hidden');
@@ -26,40 +25,6 @@ const showError = (message) => {
   }, ERROR_SHOW_TIME);
 };
 
-const getStatusMessage = ((element) => {
-  body.appendChild(element);
-});
-
-const removeStatusMessage = ((element) => {
-  if (element.parentNode) {
-    element.parentNode.removeChild(element);}
-});
-
-const onStatusMessageClick = (evt) => {
-  removeStatusMessage(evt.target);
-};
-
-const closeStatusMessageByClick = (statusMessage) => {
-  statusMessage.addEventListener('click', onStatusMessageClick);
-};
-
-const onWindowKeydown = (statusMessage) => (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    removeStatusMessage(statusMessage);
-  }
-};
-const closeStatusMessageByPress = (statusMessage) => {
-  window.addEventListener('keydown', onWindowKeydown(statusMessage));
-};
-
-const onButtonClick = (statusMessage) => {
-  removeStatusMessage(statusMessage);
-};
-
-const closeStatusMessageByButton = (statusMessage, button) => {
-  button.addEventListener('click', onButtonClick(statusMessage));
-};
 
 const debounce = (callback, timeoutDelay) => {
   let timeoutId;
@@ -75,5 +40,4 @@ const isFileTypeMatches = (file, filenameExtensions) => {
 };
 
 
-export { hideElement, showError, getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton,
-  debounce, isFileTypeMatches};
+export { hideElement, showError, debounce, isFileTypeMatches};

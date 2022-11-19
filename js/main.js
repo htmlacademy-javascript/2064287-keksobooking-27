@@ -6,3 +6,4 @@ import './slider.js';
 import './server.js';
 import './filtering.js';
 import './adding-pictures.js';
+import './popup-message.js';
