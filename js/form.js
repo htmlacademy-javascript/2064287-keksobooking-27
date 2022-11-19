@@ -1,6 +1,8 @@
-import { sendData } from './api.js';
-import { getStatusMessage, closeStatusMessageByClick, closeStatusMessageByPress, closeStatusMessageByButton } from './util.js';
-import { map, mainPin, TokyoCoordinate } from './map.js';
+import { sendData } from './server.js';
+import { getSuccessMessage, getErrorMessage, successMessage, errorMessage } from './popup-message.js';
+// import { getStatusMessage, errorMessage } from './popup-message.js';
+
+import { map, mainPin, TokyoCoordinate, } from './map.js';
 import { clearPreviewFields } from './adding-pictures.js';
 
 const form = document.querySelector('.ad-form');
@@ -14,9 +16,6 @@ const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
 const slider = form.querySelector('.ad-form__slider');
 const submitButton = form.querySelector('.ad-form__submit');
-const successMessage = document.querySelector('#success').content.querySelector('.success');
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
-const errorButton = errorMessage.querySelector('.error__button');
 const resetButton = form.querySelector('.ad-form__reset');
 const mapFilteringFrom = document.querySelector('.map__filters');
 
@@ -26,6 +25,12 @@ const pristineConfig = {
   errorTextParent: 'ad-form__element',
   errorTextClass: 'text-help'
 };
+
+const MIN_AMOUNT_LETTERS_IN_TITLE = 30;
+const MAX_AMOUNT_LETTERS_IN_TITLE = 100;
+
+const MAX_PRISE = 100000;
+
 const PriceForLiving = {
   'bungalow': 0,
   'flat': 1000,
@@ -42,7 +47,7 @@ const RoomsAndCapacity = {
 
 const pristine = new Pristine(form, pristineConfig);
 
-const istitleValidated = (value) => value.length >= 30 && value.length <= 100;
+const istitleValidated = (value) => value.length >= MIN_AMOUNT_LETTERS_IN_TITLE && value.length <= MAX_AMOUNT_LETTERS_IN_TITLE;
 const getTitleMessage = (value) => {
   if (!value.length) {
     return 'Поле обязательно для заполнения';
@@ -51,12 +56,14 @@ const getTitleMessage = (value) => {
 };
 pristine.addValidator(title, istitleValidated, getTitleMessage, 100, true);
 
-typeOfLiving.addEventListener('change', () => {
+const onTypeOfLivingChange = () => {
   const selectedValue = typeOfLiving.options[typeOfLiving.selectedIndex].value;
   price.setAttribute('min', `${PriceForLiving[selectedValue]}`);
   price.placeholder = PriceForLiving[selectedValue];
   pristine.validate(price);
-});
+};
+
+typeOfLiving.addEventListener('change', onTypeOfLivingChange);
 
 const isPriceValidated = (value) => {
   if (!value) {
@@ -65,7 +72,7 @@ const isPriceValidated = (value) => {
   const selectedValueInTypeOfLiving = typeOfLiving.options[typeOfLiving.selectedIndex].value;
   const minimalValue = PriceForLiving[selectedValueInTypeOfLiving];
 
-  return +value >= minimalValue && +value <= 100000;
+  return +value >= minimalValue && +value <= MAX_PRISE;
 };
 
 const getPriceMessage = (value) => {
@@ -95,22 +102,26 @@ const isRoomsValidated = () => {
   const validCapacityValuesForRoom = roomsValidCapacitiesMap[roomValue];
   return validCapacityValuesForRoom.includes(capacityValue);
 };
-capacity.addEventListener('change', () => {
+const onCapacityChange = () => {
   pristine.validate(rooms);
-});
+};
+
+capacity.addEventListener('change', onCapacityChange);
+
 const getRoomsMessage = () => RoomsAndCapacity[rooms.value];
 pristine.addValidator(rooms, isRoomsValidated, getRoomsMessage, 100, true);
 
-
-checkIn.addEventListener('change', () => {
+const onCheckInChange = () => {
   const selectedValueCheckin = checkIn.options[checkIn.selectedIndex].value;
   checkOut.value = selectedValueCheckin;
-});
-checkOut.addEventListener('change', () => {
+};
+checkIn.addEventListener('change', onCheckInChange);
+
+const onCheckOutChange = () => {
   const selectedValueCheckout = checkOut.options[checkOut.selectedIndex].value;
-  checkIn.value =
-selectedValueCheckout;
-});
+  checkIn.value = selectedValueCheckout;
+};
+checkOut.addEventListener('change', onCheckOutChange);
 
 
 const blockSubmitButton = () => {
@@ -138,41 +149,33 @@ const resetForm = () => {
   clearPreviewFields();
 };
 
-const onFormSubmit = () => {
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    if (pristine.validate()) {
-      blockSubmitButton();
-      sendData(
-        () => {
-          unblockSubmitButton();
-          getStatusMessage(successMessage);
-          resetForm();
-        },
-        () => {
-          getStatusMessage(errorMessage);
-          unblockSubmitButton();
-        },
-        new FormData(evt.target),
-      );
-    }
-  });
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  if (pristine.validate()) {
+    blockSubmitButton();
+    sendData(
+      () => {
+        unblockSubmitButton();
+        getSuccessMessage(successMessage);
+        resetForm();
+        slider.noUiSlider.reset();
+      },
+      () => {
+        getErrorMessage(errorMessage);
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  }
 };
 
-onFormSubmit();
+form.addEventListener('submit', onFormSubmit);
 
-closeStatusMessageByClick(successMessage);
-closeStatusMessageByPress(successMessage);
-closeStatusMessageByClick(errorMessage);
-closeStatusMessageByPress(errorMessage);
-closeStatusMessageByButton(errorMessage, errorButton);
-
-const onResetButtonClick = () => {
-  resetButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    resetForm();
-  });
+const onResetButtonClick = (evt) => {
+  evt.preventDefault();
+  resetForm();
+  slider.noUiSlider.reset();
 };
-onResetButtonClick();
+resetButton.addEventListener('click', onResetButtonClick);
 
-export { address, slider, price, mapFilteringFrom, PriceForLiving, typeOfLiving };
+export { address, slider, price, mapFilteringFrom, PriceForLiving, typeOfLiving};

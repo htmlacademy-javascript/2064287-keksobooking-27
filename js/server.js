@@ -1,17 +1,21 @@
+const URL_TO_GET_DATA = 'https://27.javascript.pages.academy/keksobooking/data';
+const URL_TO_SEND_DATA = 'https://27.javascript.pages.academy/keksobooking';
+
+
 const getData = ((onSuccess, onFail) => {
-  fetch('https://27.javascript.pages.academy/keksobooking/data')
+  fetch(URL_TO_GET_DATA)
     .then((response) => response.json())
     .then((data) => {
       onSuccess(data);
     })
     .catch(() => {
-      onFail('Не удалось соединиться с сервером. Попробуйте ещё раз');
+      onFail();
     });
 });
 
 const sendData = ((onSuccess, onFail, body) => {
   fetch(
-    'https://27.javascript.pages.academy/keksobooking',
+    URL_TO_SEND_DATA,
     {
       method: 'POST',
       body,

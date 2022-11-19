@@ -14,15 +14,17 @@ const washer = mapFilteringForm.querySelector('#filter-washer');
 const elevator = mapFilteringForm.querySelector('#filter-elevator');
 const conditioner = mapFilteringForm.querySelector('#filter-conditioner');
 const RENDER_DELAY = 500;
+const LOW_PRICE_RANGE = 10000;
+const HIGH_PRISE_RANGE = 50000;
 
 
 const isPriceMatched = (item) => {
   let priceRange;
-  if (item.offer.price >= 10000 && item.offer.price < 50000) {
+  if (item.offer.price >= LOW_PRICE_RANGE && item.offer.price < HIGH_PRISE_RANGE) {
     priceRange = 'middle';
-  } else if (item.offer.price < 10000) {
+  } else if (item.offer.price < LOW_PRICE_RANGE) {
     priceRange = 'low';
-  } else if (item.offer.price >= 50000) {
+  } else if (item.offer.price >= HIGH_PRISE_RANGE) {
     priceRange = 'high';
   }
   return housingPrice.value === priceRange || housingPrice.value === 'any';
@@ -46,17 +48,26 @@ const isElevatorChecked = (item) => elevator.checked === false || item.offer.fea
 const isConditionerChecked = (item) => conditioner.checked === false || item.offer.features?.includes('conditioner');
 
 const subscrideOnFilterFormChanges = (accommodations) => {
-  mapFilteringForm.addEventListener('change', debounce(() => {
+  const onMapFilteringFormModify = debounce(() => {
     map.closePopup();
     markerGroup.clearLayers();
 
-    const filteredAccommodations = accommodations.filter((item) =>
-      (isPriceMatched(item) && isHousingTypeMatched(item) && isRoomsMatched(item) && isGuestsMatched(item) && isWifiChecked(item)
-      && isDishwasherChecked(item) && isParkingChecked(item) && isWasherChecked(item) && isElevatorChecked(item) && isConditionerChecked(item)));
+    let markersCount = 0;
+    for (const item of accommodations) {
+      if (markersCount === AMOUNT_ADS_ON_MAP) {
+        return;
+      }
 
-    filteredAccommodations.slice(0, AMOUNT_ADS_ON_MAP).forEach((item) => {
-      addMarkerToMap(item);
-    });
-  }, RENDER_DELAY));
+      if (isPriceMatched(item) && isHousingTypeMatched(item) && isRoomsMatched(item) && isGuestsMatched(item) && isWifiChecked(item)
+        && isDishwasherChecked(item) && isParkingChecked(item) && isWasherChecked(item) && isElevatorChecked(item) && isConditionerChecked(item)) {
+        addMarkerToMap(item);
+        markersCount++;
+      }
+    }
+
+  }, RENDER_DELAY);
+
+  mapFilteringForm.addEventListener('change', onMapFilteringFormModify);
+  mapFilteringForm.addEventListener('reset', onMapFilteringFormModify);
 };
 export { subscrideOnFilterFormChanges };

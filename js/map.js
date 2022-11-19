@@ -1,7 +1,7 @@
 import { address } from './form.js';
 import { getRendedCard } from './markup.js';
 import { makeActive, makeMapFormInactive, makeAdFormInactive } from './switching-activity.js';
-import { getData } from './api.js';
+import { getData } from './server.js';
 import { showError } from './util.js';
 import { subscrideOnFilterFormChanges } from './filtering.js';
 
@@ -15,6 +15,9 @@ const SPECIAL_ICON_SIZE = [52, 52];
 const SPECIAL_ICON_ANCOR = [26, 52];
 
 const AMOUNT_ADS_ON_MAP = 10;
+const DIGITS_AFTER_POINT = 5;
+
+const ERROR_MESSAGE_FROM_SERVER = 'Не удалось соединиться с сервером. Попробуйте ещё раз';
 
 
 const TokyoCoordinate = {
@@ -57,7 +60,7 @@ const mainPin = L.marker({
 
 mainPin.on('moveend', (evt) => {
   const { lat, lng } = evt.target.getLatLng();
-  address.value = `lat: ${lat.toFixed(5)},  lng: ${lng.toFixed(5)}`;
+  address.value = `lat: ${lat.toFixed(DIGITS_AFTER_POINT)},  lng: ${lng.toFixed(DIGITS_AFTER_POINT)}`;
 });
 
 const usualIcon = L.icon(
@@ -96,8 +99,8 @@ getData((accommodations) => {
   addMarkersToMap(accommodations);
   subscrideOnFilterFormChanges(accommodations);
 }, () => {
-  showError();
+  showError(ERROR_MESSAGE_FROM_SERVER);
   makeMapFormInactive();
 });
 
-export { addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup, AMOUNT_ADS_ON_MAP };
+export { addMarkerToMap, map, mainPin, TokyoCoordinate, markerGroup, AMOUNT_ADS_ON_MAP, addMarkersToMap };
